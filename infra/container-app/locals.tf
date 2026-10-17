@@ -1,3 +1,3 @@
 locals {
-    region = "eastus"
+  region = "eastus"
 }
