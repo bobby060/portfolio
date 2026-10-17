@@ -8,6 +8,9 @@ RUN go mod download
 
 COPY src/ ./
 
+# *_templ.go is gitignored, so generate it here with the templ tool pinned in go.mod
+RUN go tool templ generate
+
 RUN CGO_ENABLED=0 GOOS=linux go build -o /out/site ./cmd/site
 
 FROM gcr.io/distroless/static-debian12:nonroot
