@@ -55,7 +55,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
-          context: .
+          # The Dockerfile's COPY paths are relative to site/, so that is the build context
+          context: ./site
           file: site/Dockerfile
           # Only push on main branch and tags, not PRs
           push: ${{ github.event_name != 'pull_request' }}
