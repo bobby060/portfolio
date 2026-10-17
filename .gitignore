@@ -1,0 +1,25 @@
+DESIGN.md
+
+# Terraform (DESIGN.md §8.4)
+*.tfstate
+*.tfstate.*
+.terraform/
+tfplan
+*.tfplan
+infra/**/plan.txt
+infra/**/comment.md
+# tfvars: only the committed non-secret terraform.tfvars and examples.
+*.tfvars
+!*.tfvars.example
+!infra/**/terraform.tfvars
+
+# Secrets and keys
+.env*
+*.pem
+*.key
+*.pfx
+
+# Templ auto generated files
+*_templ.go
+
+bin/

@@ -1,0 +1,97 @@
+# # Reusable: apply one env stack, smoke test it, purge its edge cache.
+# # Called by deploy.yml once per environment.
+# name: tf-apply
+
+# on:
+#   workflow_call:
+#     inputs:
+#       environment:
+#         type: string
+#         required: true
+#       image:
+#         description: Image reference to deploy; empty keeps the running image.
+#         type: string
+#         default: ""
+#     # Callers use `secrets: inherit`: CF_API_TOKEN is an *environment* secret,
+#     # resolvable only inside the job that declares the environment.
+
+# permissions:
+#   contents: read
+
+# jobs:
+#   apply:
+#     name: apply (${{ inputs.environment }})
+#     runs-on: ubuntu-latest
+#     environment: ${{ inputs.environment }}
+#     permissions:
+#       contents: read
+#       id-token: write
+#     defaults:
+#       run:
+#         working-directory: infra/envs/${{ inputs.environment }}
+#     env:
+#       ARM_USE_OIDC: "true"
+#       ARM_USE_AZUREAD: "true"
+#       ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+#       ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+#       ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+#       CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+#       ENV_NAME: ${{ inputs.environment }}
+#       INPUT_IMAGE: ${{ inputs.image }}
+#     steps:
+#       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+#         with:
+#           persist-credentials: false
+
+#       - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+#         with:
+#           terraform_version: "~1.14"
+#           terraform_wrapper: false
+
+#       - uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+#         with:
+#           client-id: ${{ vars.AZURE_CLIENT_ID }}
+#           tenant-id: ${{ vars.AZURE_TENANT_ID }}
+#           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+#       - name: Resolve image
+#         run: |
+#           if [[ -n "$INPUT_IMAGE" ]]; then
+#             if [[ ! "$INPUT_IMAGE" =~ ^ghcr\.io/bobby060/site@sha256:[0-9a-f]{64}$ ]]; then
+#               echo "::error::image must be ghcr.io/bobby060/site@sha256:<digest>"
+#               exit 1
+#             fi
+#             image="$INPUT_IMAGE"
+#           else
+#             image="$(../../scripts/current-image.sh "$ENV_NAME")"
+#           fi
+#           echo "Deploying $image"
+#           echo "TF_VAR_image=$image" >> "$GITHUB_ENV"
+
+#       - run: terraform init -input=false
+#       - run: terraform apply -input=false -auto-approve -no-color
+
+#       - name: Smoke test
+#         run: |
+#           host="$(terraform output -raw hostname)"
+#           fqdn="$(terraform output -raw app_fqdn)"
+#           if [[ "$ENV_NAME" == "staging" ]]; then
+#             CF_ACCESS_CLIENT_ID="$(terraform output -raw smoke_client_id)"
+#             CF_ACCESS_CLIENT_SECRET="$(terraform output -raw smoke_client_secret)"
+#             echo "::add-mask::$CF_ACCESS_CLIENT_ID"
+#             echo "::add-mask::$CF_ACCESS_CLIENT_SECRET"
+#             export CF_ACCESS_CLIENT_ID CF_ACCESS_CLIENT_SECRET
+#           fi
+#           ../../scripts/smoke.sh "$host" "$fqdn"
+#           echo "SITE_HOST=$host" >> "$GITHUB_ENV"
+
+#       - name: Purge edge cache
+#         env:
+#           CF_ZONE_ID: ${{ vars.CF_ZONE_ID }}
+#         run: |
+#           curl -sS --fail-with-body -X POST \
+#             "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
+#             -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+#             -H "Content-Type: application/json" \
+#             --data "{\"hosts\":[\"${SITE_HOST}\"]}" > /dev/null
+#           echo "Purged cache for ${SITE_HOST}"

@@ -1,0 +1,54 @@
+# # Staging (automatic) → prod (required reviewer). DESIGN.md §7.
+# # image.yml will call this with a digest once it exists; until then a push to
+# # main touching infra/ re-applies with the running image.
+# name: deploy
+
+# on:
+#   push:
+#     branches: [main]
+#     paths:
+#       - "infra/envs/**"
+#       - "infra/modules/**"
+#       - "infra/scripts/**"
+#       - ".github/workflows/deploy.yml"
+#       - ".github/workflows/tf-apply.yml"
+#   workflow_dispatch:
+#     inputs:
+#       image:
+#         description: "ghcr.io/bobby060/site@sha256:<digest> (empty keeps the running image)"
+#         type: string
+#         default: ""
+#   workflow_call:
+#     inputs:
+#       image:
+#         type: string
+#         required: true
+
+# permissions:
+#   contents: read
+
+# concurrency:
+#   group: deploy
+#   cancel-in-progress: false
+
+# jobs:
+#   staging:
+#     uses: ./.github/workflows/tf-apply.yml
+#     permissions:
+#       contents: read
+#       id-token: write
+#     with:
+#       environment: staging
+#       image: ${{ inputs.image || '' }}
+#     secrets: inherit
+
+#   prod:
+#     needs: staging
+#     uses: ./.github/workflows/tf-apply.yml
+#     permissions:
+#       contents: read
+#       id-token: write
+#     with:
+#       environment: prod
+#       image: ${{ inputs.image || '' }}
+#     secrets: inherit
