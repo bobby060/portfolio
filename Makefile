@@ -51,6 +51,8 @@ down:
 logs:
 	docker compose -f $(COMPOSE_PATH) logs -f
 
-# .PHONY: clean
-# clean:
-# 	rm -r
+.PHONY: clean
+clean:
+	rm -r bin/
+	find $(MODULE_DIR) -name '*_templ.go' -delete
+
