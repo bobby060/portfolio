@@ -19,14 +19,10 @@ resource "cloudflare_origin_ca_certificate" "origin" {
   requested_validity = 5475 # 15 years
 }
 
-resource "random_password" "origin_cert" {
-  length  = 32
-  special = false
-}
-
+# PEM bundle (cert + PKCS#8 key); PEM uploads must not have a password.
 resource "azurerm_container_app_environment_certificate" "origin" {
   name                         = "${local.name}-origin-ca"
   container_app_environment_id = module.container_app.environment_id
-  certificate_blob_base64      = base64encode("${cloudflare_origin_ca_certificate.origin.certificate}\n${tls_private_key.origin.private_key_pem}")
-  certificate_password         = random_password.origin_cert.result
+  certificate_blob_base64      = base64encode("${trimspace(cloudflare_origin_ca_certificate.origin.certificate)}\n${tls_private_key.origin.private_key_pem_pkcs8}")
+  certificate_password         = ""
 }
