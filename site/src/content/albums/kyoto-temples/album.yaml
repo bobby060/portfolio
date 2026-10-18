@@ -1,0 +1,22 @@
+title: "Kyoto Temples"
+date: 2019-11-02
+description: "Maple season at the temples of Kyoto."
+tags: [travel]
+featured: false
+images:
+  - { sha: mock-kyoto-temples-01, width: 6000, height: 4000 }
+  - { sha: mock-kyoto-temples-02, width: 4000, height: 6000 }
+  - { sha: mock-kyoto-temples-03, width: 6000, height: 4000 }
+  - { sha: mock-kyoto-temples-04, width: 5000, height: 5000 }
+  - { sha: mock-kyoto-temples-05, width: 6000, height: 4000 }
+  - { sha: mock-kyoto-temples-06, width: 4000, height: 6000 }
+  - { sha: mock-kyoto-temples-07, width: 6000, height: 4000 }
+  - { sha: mock-kyoto-temples-08, width: 5000, height: 5000 }
+  - { sha: mock-kyoto-temples-09, width: 6000, height: 4000 }
+  - { sha: mock-kyoto-temples-10, width: 4000, height: 6000 }
+  - { sha: mock-kyoto-temples-11, width: 6000, height: 4000 }
+  - { sha: mock-kyoto-temples-12, width: 5000, height: 5000 }
+  - { sha: mock-kyoto-temples-13, width: 6000, height: 4000 }
+  - { sha: mock-kyoto-temples-14, width: 4000, height: 6000 }
+  - { sha: mock-kyoto-temples-15, width: 6000, height: 4000 }
+  - { sha: mock-kyoto-temples-16, width: 5000, height: 5000 }
