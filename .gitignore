@@ -11,7 +11,7 @@ infra/**/comment.md
 # tfvars: only the committed non-secret terraform.tfvars and examples.
 *.tfvars
 !*.tfvars.example
-!infra/**/terraform.tfvars
+# !infra/**/terraform.tfvars
 
 # Secrets and keys
 .env*
