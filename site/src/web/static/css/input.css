@@ -1,0 +1,12 @@
+/* Tailwind entry point. `make css` compiles this to site.css (gitignored). */
+@import "tailwindcss" source(none);
+
+/* Only scan our templates for class names. Paths are relative to this file. */
+@source "../../components";
+
+@theme {
+  /* The old site used MDB's Roboto (if installed) with a system-font fallback */
+  --font-sans: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  /* MDB's bg-light; gives us bg-light / text-light utilities */
+  --color-light: #fbfbfb;
+}
