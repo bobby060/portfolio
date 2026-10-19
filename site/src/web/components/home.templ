@@ -1,7 +1,65 @@
 package components
 
-templ Home() {
+templ Home(p HomePage) {
 	@Layout("R Norwood", "Photography by Robert Norwood") {
-		<p class="p-8">Home page coming in step 6.</p>
+		@hero(p)
+		if len(p.Featured) > 0 {
+			<section class="mx-auto w-full p-2 lg:w-10/12 xl:w-8/12" aria-label="Featured albums">
+				<div class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none]">
+					for _, a := range p.Featured {
+						@featuredSlide(a)
+					}
+				</div>
+			</section>
+		}
+		<section id="albums" class="mx-auto w-full scroll-mt-16 lg:w-10/12 xl:w-8/12" aria-label="Albums">
+			<hr class="border-black/25"/>
+			<div class="m-1 grid grid-cols-1 min-[351px]:grid-cols-2 min-[751px]:grid-cols-3">
+				for _, a := range p.Albums {
+					@albumCard(a)
+				}
+			</div>
+		</section>
 	}
+}
+
+templ hero(p HomePage) {
+	<section class="relative h-[calc(100svh-57px)] overflow-hidden bg-neutral-900">
+		// Slides first: the crossfade CSS uses nth-child
+		for i, h := range p.Hero {
+			@image(h, "hero-slide absolute inset-0 size-full object-cover", i > 0)
+		}
+		<div class="absolute top-1/2 left-1/2 z-10 w-max max-w-[min(90vw,40rem)] -translate-x-1/2 -translate-y-1/2 bg-light p-6 text-left text-neutral-900 shadow-lg">
+			<h1 class="mb-2 text-xl font-medium">{ p.Title }</h1>
+			<p class="mb-3 hidden text-xl font-light sm:block">{ p.Tagline }</p>
+			<div class="flex justify-center">
+				for _, l := range p.Links {
+					<a
+						href={ l.Href }
+						if l.External {
+							target="_blank"
+							rel="noopener"
+						}
+						class="m-1 rounded border-2 border-neutral-800 px-5 py-1.5 text-xs font-medium uppercase transition hover:bg-neutral-800 hover:text-white"
+					>{ l.Label }</a>
+				}
+			</div>
+		</div>
+		<a href="#albums" aria-label="Scroll to albums" class="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 text-white/50 hover:text-white/80">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+				<path d="M6 9l6 6 6-6"></path>
+			</svg>
+		</a>
+	</section>
+}
+
+templ featuredSlide(a AlbumCard) {
+	<a href={ a.Href } class="relative w-full shrink-0 snap-center overflow-hidden bg-neutral-900 text-right text-white">
+		@image(a.Img, "aspect-[16/9] w-full object-cover", true)
+		<div class="absolute inset-0 bg-linear-to-b from-black/20 to-transparent to-50%"></div>
+		<div class="absolute top-0 right-0 p-6">
+			<h2 class="text-4xl font-light">{ a.Title }</h2>
+			<p>{ a.Date }</p>
+		</div>
+	</a>
 }
