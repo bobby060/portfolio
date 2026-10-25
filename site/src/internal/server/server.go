@@ -27,7 +27,11 @@ func New(store gallery.Store, imgs images.URLBuilder, log *slog.Logger) http.Han
 	mux.Handle("GET /static/", http.StripPrefix("/static/", noListing(http.FileServerFS(static.FS))))
 	mux.HandleFunc("GET /healthz", s.healthz)
 	mux.HandleFunc("GET /{$}", s.home)
+	mux.HandleFunc("GET /albums", s.albums)
+	mux.HandleFunc("GET /fragments/albums", s.albumsFragment)
 	mux.HandleFunc("/", s.notFound)
+	mux.HandleFunc("GET /albums/{slug}", s.album)
+
 	return mux
 }
 

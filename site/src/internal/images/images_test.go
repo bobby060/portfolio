@@ -35,3 +35,19 @@ func TestSrcset(t *testing.T) {
 		})
 	}
 }
+
+func TestLargest(t *testing.T) {
+	tests := []struct {
+		width, want int
+	}{
+		{6000, 1920},
+		{1920, 1920},
+		{1000, 800},
+		{200, 400}, // smaller than every variant: the smallest, matching Srcset
+	}
+	for _, tc := range tests {
+		if got := Largest(gallery.Image{Width: tc.width, Height: 100}); got != tc.want {
+			t.Errorf("Largest(width %d) = %d, want %d", tc.width, got, tc.want)
+		}
+	}
+}

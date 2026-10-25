@@ -32,3 +32,21 @@ func Srcset(b URLBuilder, img gallery.Image) string {
 	}
 	return strings.Join(parts, ", ")
 }
+
+// Height returns img's height when scaled to width, rounded to the nearest pixel
+// and at least 1.
+func Height(img gallery.Image, width int) int {
+	// Adding half the divisor before dividing turns Go's round-down division into round-to-nearest
+	return max((width*img.Height+img.Width/2)/img.Width, 1)
+}
+
+// Largest returns the widest variant Srcset offers for img.
+func Largest(img gallery.Image) int {
+	best := Widths[0]
+	for _, w := range Widths {
+		if w <= img.Width {
+			best = w
+		}
+	}
+	return best
+}

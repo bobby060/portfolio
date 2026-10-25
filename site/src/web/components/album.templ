@@ -1,0 +1,38 @@
+package components
+
+import "strconv"
+
+templ Album(p AlbumPage) {
+	@Layout(p.Title+" · R Norwood", p.Desc) {
+		<header
+			class="flex items-end bg-neutral-900 bg-cover bg-fixed bg-top bg-no-repeat"
+			style={ headerStyle(p.HeaderURL, p.HeaderW, p.HeaderH) }
+		>
+			<div class="w-full bg-linear-to-b from-transparent from-20% to-black/50 pt-12">
+				<div class="mx-auto flex max-w-7xl items-end px-4 pb-2 text-white">
+					<h1 class="text-left text-3xl">{ p.Title }</h1>
+					<div class="mx-3 h-10 w-px bg-white/60" aria-hidden="true"></div>
+					<p class="p-1 text-left text-xl">{ p.Date }</p>
+				</div>
+			</div>
+		</header>
+		if p.Desc != "" {
+			<div class="mx-auto max-w-7xl px-4">
+				<p class="mt-2 p-1 text-left">{ p.Desc }</p>
+			</div>
+		}
+		<div id="photos" class="mx-auto max-w-7xl columns-1 gap-0 p-1 min-[351px]:columns-2 min-[751px]:columns-3">
+			for _, ph := range p.Photos {
+				<a
+					href={ ph.Full }
+					data-pswp-width={ strconv.Itoa(ph.FullW) }
+					data-pswp-height={ strconv.Itoa(ph.FullH) }
+					class="group relative block break-inside-avoid p-1"
+				>
+					@image(ph.Img, "w-full shadow-[0_2px_25px_-5px_rgba(0,0,0,0.07),0_25px_21px_-5px_rgba(0,0,0,0.04)]", true)
+					<div class="absolute inset-1 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+				</a>
+			}
+		</div>
+	}
+}

@@ -12,14 +12,7 @@ templ Home(p HomePage) {
 				</div>
 			</section>
 		}
-		<section id="albums" class="mx-auto w-full scroll-mt-16 lg:w-10/12 xl:w-8/12" aria-label="Albums">
-			<hr class="border-black/25"/>
-			<div class="m-1 grid grid-cols-1 min-[351px]:grid-cols-2 min-[751px]:grid-cols-3">
-				for _, a := range p.Albums {
-					@albumCard(a)
-				}
-			</div>
-		</section>
+		@albumsSection(p)
 	}
 }
 
