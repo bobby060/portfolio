@@ -1,5 +1,5 @@
 // Package content holds album metadata as YAML, embedded in the binary
-// 
+//
 // (for now)
 package content
 
