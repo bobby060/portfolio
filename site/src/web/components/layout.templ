@@ -12,6 +12,7 @@ templ Layout(title, description string) {
 			<link rel="icon" type="image/png" href="/static/img/favicon.png"/>
 			<link rel="stylesheet" href="/static/css/site.css"/>
 			<script src="/static/js/htmx.min.js" defer></script>
+			<script type="module" src="/static/js/nav.js"></script>
 		</head>
 		<body class="flex min-h-screen flex-col bg-white text-center font-sans text-neutral-800 antialiased">
 			@navbar()
@@ -24,7 +25,7 @@ templ Layout(title, description string) {
 }
 
 templ navbar() {
-	<header id="navbar" class="sticky top-0 z-50 bg-light shadow-[0_4px_12px_0_rgba(0,0,0,0.07),0_2px_4px_rgba(0,0,0,0.05)]">
+	<header id="navbar" class="sticky top-0 z-50 bg-light shadow-[0_4px_12px_0_rgba(0,0,0,0.07),0_2px_4px_rgba(0,0,0,0.05)] transition-transform duration-300 motion-reduce:transition-none">
 		<nav class="flex items-center px-4 pt-[0.5625rem] pb-2">
 			<a href="/" class="flex items-center text-xl text-black/90">
 				<img src="/static/img/logo192.png" alt="RNorwood logo" width="46" height="40" class="pr-2"/>

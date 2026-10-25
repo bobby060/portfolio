@@ -26,6 +26,7 @@ func TestAlbumPage(t *testing.T) {
 		`alt="Jinju Lights, photo 2"`,         // fallback alt when there's no caption
 		`data-pswp-width="1920"`,              // 6000px original -> largest 1920 variant
 		`data-pswp-height="1280"`,
+		`src="/static/js/gallery.js"`,
 	} {
 		if !strings.Contains(rec.Body.String(), want) {
 			t.Errorf("album page does not contain %q", want)

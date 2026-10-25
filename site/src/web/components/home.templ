@@ -4,14 +4,20 @@ templ Home(p HomePage) {
 	@Layout("R Norwood", "Photography by Robert Norwood") {
 		@hero(p)
 		if len(p.Featured) > 0 {
-			<section class="mx-auto w-full p-2 lg:w-10/12 xl:w-8/12" aria-label="Featured albums">
-				<div class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none]">
+			<section class="relative mx-auto w-full p-2 lg:w-10/12 xl:w-8/12" aria-label="Featured albums" data-carousel>
+				<div class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none]" data-carousel-track>
 					for _, a := range p.Featured {
 						@featuredSlide(a)
 					}
 				</div>
+				if len(p.Featured) > 1 {
+					@carouselButton("prev", "Previous album", "left-4", "M15 18l-6-6 6-6")
+					@carouselButton("next", "Next album", "right-4", "M9 18l6-6-6-6")
+				}
 			</section>
+			<script type="module" src="/static/js/carousel.js"></script>
 		}
+
 		@albumsSection(p)
 	}
 }
@@ -55,4 +61,20 @@ templ featuredSlide(a AlbumCard) {
 			<p>{ a.Date }</p>
 		</div>
 	</a>
+}
+
+// carouselButton starts hidden; carousel.js reveals it. dir is "prev" or "next".
+templ carouselButton(dir, label, side, path string) {
+	<button
+		type="button"
+		hidden
+		data-carousel-prev?={ dir == "prev" }
+		data-carousel-next?={ dir == "next" }
+		aria-label={ label }
+		class={ "absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white transition hover:bg-black/50", side }
+	>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-8" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+			<path d={ path }></path>
+		</svg>
+	</button>
 }
