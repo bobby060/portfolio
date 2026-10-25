@@ -22,4 +22,9 @@ infra/**/comment.md
 # Templ auto generated files
 *_templ.go
 
+
 bin/
+
+
+# Tailwind output (built by `make css` and in the Dockerfile)
+site/src/web/static/css/site.css

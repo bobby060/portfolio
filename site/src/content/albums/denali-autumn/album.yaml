@@ -1,0 +1,21 @@
+title: "Denali in Autumn"
+date: 2022-09-03
+description: "Tundra on fire with fall colour beneath the mountain."
+tags: [landscape, alaska]
+featured: true
+cover: mock-denali-autumn-01
+images:
+  - { sha: mock-denali-autumn-01, width: 6000, height: 4000 }
+  - { sha: mock-denali-autumn-02, width: 4000, height: 6000 }
+  - { sha: mock-denali-autumn-03, width: 6000, height: 4000 }
+  - { sha: mock-denali-autumn-04, width: 5000, height: 5000 }
+  - { sha: mock-denali-autumn-05, width: 6000, height: 4000 }
+  - { sha: mock-denali-autumn-06, width: 4000, height: 6000 }
+  - { sha: mock-denali-autumn-07, width: 6000, height: 4000 }
+  - { sha: mock-denali-autumn-08, width: 5000, height: 5000 }
+  - { sha: mock-denali-autumn-09, width: 6000, height: 4000 }
+  - { sha: mock-denali-autumn-10, width: 4000, height: 6000 }
+  - { sha: mock-denali-autumn-11, width: 6000, height: 4000 }
+  - { sha: mock-denali-autumn-12, width: 5000, height: 5000 }
+  - { sha: mock-denali-autumn-13, width: 6000, height: 4000 }
+  - { sha: mock-denali-autumn-14, width: 4000, height: 6000 }

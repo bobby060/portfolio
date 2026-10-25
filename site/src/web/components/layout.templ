@@ -1,0 +1,54 @@
+package components
+
+// Layout is the page shell shared by every page: head, navbar, content, footer.
+templ Layout(title, description string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>{ title }</title>
+			<meta name="description" content={ description }/>
+			<link rel="icon" type="image/png" href="/static/img/favicon.png"/>
+			<link rel="stylesheet" href="/static/css/site.css"/>
+			<script src="/static/js/htmx.min.js" defer></script>
+			<script type="module" src="/static/js/nav.js"></script>
+		</head>
+		<body class="flex min-h-screen flex-col bg-white text-center font-sans text-neutral-800 antialiased">
+			@navbar()
+			<main class="flex-1">
+				{ children... }
+			</main>
+			@footer()
+		</body>
+	</html>
+}
+
+templ navbar() {
+	<header id="navbar" class="sticky top-0 z-50 bg-light shadow-[0_4px_12px_0_rgba(0,0,0,0.07),0_2px_4px_rgba(0,0,0,0.05)] transition-transform duration-300 motion-reduce:transition-none">
+		<nav class="flex items-center px-4 pt-[0.5625rem] pb-2">
+			<a href="/" class="flex items-center text-xl text-black/90">
+				<img src="/static/img/logo192.png" alt="RNorwood logo" width="46" height="40" class="pr-2"/>
+				Robert Norwood
+			</a>
+			<div class="ms-2 hidden lg:flex">
+				@navLinks()
+			</div>
+			<details class="ms-auto lg:hidden">
+				<summary class="cursor-pointer list-none p-2 [&::-webkit-details-marker]:hidden" aria-label="Menu">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+						<path d="M4 6h16M4 12h16M4 18h16"></path>
+					</svg>
+				</summary>
+				<div class="absolute inset-x-0 top-full flex flex-col items-start bg-light px-4 pb-2 shadow">
+					@navLinks()
+				</div>
+			</details>
+		</nav>
+	</header>
+}
+
+templ navLinks() {
+	<a href="/" class="p-2 text-black/55 hover:text-black/70">Home</a>
+	<a href="/#albums" class="p-2 text-black/55 hover:text-black/70">Albums</a>
+}

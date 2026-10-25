@@ -1,0 +1,19 @@
+package components
+
+import "strconv"
+
+templ image(i Img, class string, lazy bool) {
+	<img
+		src={ i.Src }
+		srcset={ i.Srcset }
+		sizes={ i.Sizes }
+		width={ strconv.Itoa(i.W) }
+		height={ strconv.Itoa(i.H) }
+		alt={ i.Alt }
+		class={ class }
+		if lazy {
+			loading="lazy"
+		}
+		decoding="async"
+	/>
+}

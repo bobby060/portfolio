@@ -1,0 +1,14 @@
+# Site-wide content: hero carousel and intro card on the home page.
+title: Robert Norwood
+tagline: Through pictures we see the world not just for what it is, but for what it can be
+links:
+  - label: Photos
+    href: "#albums"
+  - label: Coding
+    href: https://github.com/bobby060
+hero:
+  - { sha: mock-hero-01, width: 1920, height: 1280 }
+  - { sha: mock-hero-02, width: 1920, height: 1280 }
+  - { sha: mock-hero-03, width: 1920, height: 1280 }
+  - { sha: mock-hero-04, width: 1920, height: 1280 }
+  - { sha: mock-hero-05, width: 1920, height: 1280 }

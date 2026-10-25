@@ -1,0 +1,57 @@
+package components
+
+templ albumsSection(p HomePage) {
+	<section id="albums" class="mx-auto w-full scroll-mt-16 lg:w-10/12 xl:w-8/12" aria-label="Albums">
+		<hr class="border-black/25"/>
+		<div class="flex flex-wrap p-1 pb-0">
+			for _, c := range p.Tags {
+				@tagChip(c)
+			}
+		</div>
+		if len(p.Grid.Albums) == 0 {
+			<p class="p-8 text-neutral-500">No albums found.</p>
+		} else {
+			<div id="album-grid" class="m-1 grid grid-cols-1 min-[351px]:grid-cols-2 min-[751px]:grid-cols-3">
+				@AlbumGridItems(p.Grid)
+			</div>
+		}
+	</section>
+}
+
+// AlbumGridItems is one batch of cards plus the link that loads the next batch.
+// It is part of the full page and also the entire /fragments/albums response.
+templ AlbumGridItems(g AlbumGrid) {
+	for _, a := range g.Albums {
+		@albumCard(a)
+	}
+	if g.MoreHref != "" {
+		// When this scrolls into view, htmx fetches the next batch and replaces this link
+		// with it. The batch ends with its own link, so the chain continues. Without JS
+		// it is an ordinary link.
+		<a
+			href={ g.MoreHref }
+			hx-get={ g.MoreHX }
+			hx-trigger="revealed"
+			hx-swap="outerHTML"
+			class="col-span-full p-4 text-neutral-500 hover:text-neutral-800"
+		>Load more</a>
+	}
+}
+
+templ tagChip(c TagChip) {
+	<a
+		href={ c.Href }
+		hx-get={ c.HX }
+		hx-target="#albums"
+		hx-select="#albums"
+		hx-swap="outerHTML"
+		hx-push-url={ c.Href }
+		class={ "m-1 inline-flex items-center gap-1 rounded-full border border-neutral-800 px-3 py-1 text-xs font-medium uppercase transition", templ.KV("bg-neutral-800 text-white", c.Active), templ.KV("text-neutral-800 hover:bg-neutral-100", !c.Active) }
+	>
+		{ c.Name }
+		if c.Active {
+			<span class="text-white/50" aria-hidden="true">×</span>
+			<span class="sr-only">(clear filter)</span>
+		}
+	</a>
+}

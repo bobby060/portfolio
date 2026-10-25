@@ -1,0 +1,38 @@
+title: "Jinju Lights"
+date: 2026-04-01
+description: "Visiting Jinju."
+tags: [landscape, korea, night]
+featured: false
+cover: mock-jinju-lights-1
+slug: jinju-lights
+images:
+  - sha: mock-jinju-lights-1
+    width: 6000
+    height: 4000 
+    caption: "This is a caption!"
+  - sha: mock-jinju-lights-2
+    width: 4000
+    height: 6000
+  - sha: mock-jinju-lights-3
+    width: 6000
+    height: 4000
+    taken_at: 2026-04-30T20:15:00Z
+    caption: Lanterns on the Namgang River
+  - sha: mock-jinju-lights-4
+    width: 5000
+    height: 5000
+  - sha: mock-jinju-lights-5
+    width: 6000
+    height: 4000 
+  - sha: mock-jinju-lights-6
+    width: 4000
+    height: 6000 
+  - sha: mock-jinju-lights-7
+    width: 6000
+    height: 4000 
+  - sha: mock-jinju-lights-8
+    width: 5000
+    height: 5000 
+  - sha: mock-jinju-lights-9
+    width: 6000
+    height: 4000

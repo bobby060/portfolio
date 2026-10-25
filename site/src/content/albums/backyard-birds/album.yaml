@@ -1,0 +1,19 @@
+title: "Backyard Birds"
+date: 2025-02-08
+description: "A winter of feeder visitors."
+tags: [wildlife]
+featured: false
+cover: mock-backyard-birds-01
+images:
+  - { sha: mock-backyard-birds-01, width: 6000, height: 4000 }
+  - { sha: mock-backyard-birds-02, width: 4000, height: 6000 }
+  - { sha: mock-backyard-birds-03, width: 6000, height: 4000 }
+  - { sha: mock-backyard-birds-04, width: 5000, height: 5000 }
+  - { sha: mock-backyard-birds-05, width: 6000, height: 4000 }
+  - { sha: mock-backyard-birds-06, width: 4000, height: 6000 }
+  - { sha: mock-backyard-birds-07, width: 6000, height: 4000 }
+  - { sha: mock-backyard-birds-08, width: 5000, height: 5000 }
+  - { sha: mock-backyard-birds-09, width: 6000, height: 4000 }
+  - { sha: mock-backyard-birds-10, width: 4000, height: 6000 }
+  - { sha: mock-backyard-birds-11, width: 6000, height: 4000 }
+  - { sha: mock-backyard-birds-12, width: 5000, height: 5000 }
