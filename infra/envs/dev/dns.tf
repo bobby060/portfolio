@@ -18,9 +18,10 @@ resource "cloudflare_dns_record" "app" {
   depends_on = [cloudflare_dns_record.azure_verification]
 }
 
-# Full (strict): Cloudflare checks the origin cert against our Origin CA chain.
-resource "cloudflare_zone_setting" "ssl" {
-  zone_id    = var.cloudflare_zone_id
-  setting_id = "ssl"
-  value      = "strict"
+# Moved to infra/shared (zone-wide). Forget it here without destroying it.
+removed {
+  from = cloudflare_zone_setting.ssl
+  lifecycle {
+    destroy = false
+  }
 }

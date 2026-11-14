@@ -25,6 +25,14 @@ func (s *Server) healthz(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte("ok\n"))
 }
 
+// readyz is "/readyz" and signals that all external resources are ready and site is
+// ready to serve content
+func (s *Server) readyz(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	// TODO: Put check here
+	_, _ = w.Write([]byte("ok\n"))
+}
+
 // home is "/": the unfiltered first page.
 func (s *Server) home(w http.ResponseWriter, r *http.Request) {
 	s.render(w, r, http.StatusOK, components.Home(s.homePage("", 1)))

@@ -10,6 +10,8 @@ module "container_app" {
   containername = local.containername
   containerpath = local.containerpath
 
+  origin_auth = data.terraform_remote_state.shared.outputs.origin_auth[local.env].result
+
   ingress_allowed_cidrs = data.cloudflare_ip_ranges.edge.ipv4_cidrs
 }
 
