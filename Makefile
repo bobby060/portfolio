@@ -35,7 +35,7 @@ build: generate css
 
 .PHONY: run
 run: build
-	$(BINARY)
+	DEV_MODE $(BINARY)
 
 # Live reload: templ proxy on http://localhost:7331, Tailwind rebuilding CSS on change
 .PHONY: dev
@@ -44,7 +44,7 @@ dev:
 
 .PHONY: dev-templ
 dev-templ:
-	cd $(MODULE_DIR) && CONTENT_DIR=content go tool templ generate --watch \
+	cd $(MODULE_DIR) && DEV_MODE=true CONTENT_DIR=content go tool templ generate --watch \
 		--watch-pattern='(.+\.go$$)|(.+\.templ$$)|(.+_templ\.txt$$)|(.+site\.css$$)' \
 		--proxy=http://localhost:8080 --cmd="go run ./cmd/site"
 
