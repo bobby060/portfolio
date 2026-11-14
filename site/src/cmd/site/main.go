@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"portfolio/content"
+	"portfolio/internal/config"
 	"portfolio/internal/gallery"
 	"portfolio/internal/images"
 	"portfolio/internal/server"
@@ -24,10 +25,15 @@ func main() {
 
 // run wires the app together. Swapping picsum for real images is a one-line change here.
 func run(log *slog.Logger) error {
+	cfg, err := config.FromEnv(os.Getenv)
+	if err != nil {
+		return err
+	}
+
 	var contentFS fs.FS = content.FS
-	if dir := os.Getenv("CONTENT_DIR"); dir != "" {
-		contentFS = os.DirFS(dir) // dev: YAML edits apply on restart, no rebuild
-		log.Info("reading content from disk", "dir", dir)
+	if cfg.ContentDir != "" {
+		contentFS = os.DirFS(cfg.ContentDir) // dev: YAML edits apply on restart, no rebuild
+		log.Info("reading content from disk", "dir", cfg.ContentDir)
 	}
 
 	store, err := gallery.LoadYAML(contentFS)
@@ -35,11 +41,21 @@ func run(log *slog.Logger) error {
 		return fmt.Errorf("load content: %w", err)
 	}
 
+	var h http.Handler = server.New(store, images.Picsum{}, log)
+	if cfg.DevMode {
+		log.Warn("DEV_MODE=true: origin auth is OFF")
+	} else {
+		h = server.RequireOriginAuth(cfg.OriginSecrets, h)
+	}
+	h = server.SecurityHeaders(h) // outermost, so 403s get the headers too
+
 	srv := &http.Server{
-		Addr:              ":8080",
-		Handler:           server.New(store, images.Picsum{}, log),
+		Addr:              cfg.Addr,
+		Handler:           h,
 		ReadHeaderTimeout: 10 * time.Second, // drop clients that never finish sending headers
 	}
+	// ...rest unchanged
+
 	log.Info("listening", "addr", srv.Addr)
 	return srv.ListenAndServe()
 }

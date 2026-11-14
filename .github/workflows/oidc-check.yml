@@ -1,0 +1,35 @@
+# Manual check that GitHub → Azure OIDC works and is scoped correctly. Delete once deploy.yml runs.
+name: oidc-check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    permissions:
+      contents: read
+      id-token: write # lets this job request an OIDC token; nothing else gets one
+    steps:
+      - uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Can see own resource group
+        run: az group show -n rgp-portfolio-dev --query name -o tsv
+
+      - name: Can read own state
+        run: az storage blob list --account-name stgportfolio1542state -c tf-state-dev --auth-mode login --query "[].name" -o tsv
+
+      - name: Cannot see prod (must fail)
+        run: |
+          if az group show -n rgp-portfolio-prod > /dev/null 2>&1; then
+            echo "::error::deploy-dev can see prod's resource group"
+            exit 1
+          fi

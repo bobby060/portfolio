@@ -18,6 +18,8 @@ resource "azurerm_container_app_environment" "this" {
   tags = var.tags
 }
 
+
+
 resource "azurerm_container_app" "this" {
   name                         = "${var.name}-app"
   container_app_environment_id = azurerm_container_app_environment.this.id
@@ -26,12 +28,25 @@ resource "azurerm_container_app" "this" {
 
   tags = var.tags
 
+  secret {
+     name = "origin-auth"
+    value = var.origin_auth 
+  }
+
+
+
   template {
     container {
       name   = var.containername
       image  = var.containerpath
       cpu    = 0.25
       memory = "0.5Gi"
+
+      # Pass secret from cloudflare into container
+      env {
+        name        = "ORIGIN_AUTH"
+        secret_name = "origin-auth"
+      }
     }
     min_replicas = 0
     max_replicas = 1

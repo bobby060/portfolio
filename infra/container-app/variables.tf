@@ -30,3 +30,8 @@ variable "ingress_allowed_cidrs" {
   type        = list(string)
   description = "CIDRs allowed to reach ingress. Pass Cloudflare's ranges so only the proxy can connect."
 }
+variable "origin_auth" {
+  type        = string
+  sensitive   = true
+  description = "This is the origin auth secret that cloudflare passes with authenticated requests"
+}

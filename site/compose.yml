@@ -6,3 +6,7 @@ services:
     ports:
       - "8080:8080"
     read_only: true # same as ACA: the app must never write to its filesystem
+    environment:
+      - ORIGIN_AUTH=local-only-not-secret
+
+

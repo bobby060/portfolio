@@ -4,7 +4,7 @@ Create a api token with these permissions
 Go to My Profile (top-right avatar) → API Tokens → Create Token. This is different from the account-level API Tokens page.
 Add these permissions:
 Zone | SSL and Certificates | Edit. It appears in this list; it wasn't in the account token UI.
-The other permissions your config needs: Zone | DNS | Edit, Zone | Zone Settings | Edit, and Account | Access: Apps and Policies | Edit for the Zero Trust resources.
+The other permissions your config needs: Zone | DNS | Edit, Zone | Zone Settings | Edit, and Account | Access: Apps and Policies | Edit for the Zero Trust resources. Will need Zone.TransformRules.Edit for the auth toekn trasnform rule
 put it in .env or export
 
 Create a Cloudflare API token scoped to the rnorwood.com zone and account with: DNS edit, zone settings edit, zone read, and Access apps and policies edit. Then run export CLOUDFLARE_API_TOKEN=... in your shell.
@@ -15,3 +15,6 @@ Run terraform init and terraform plan from infra/envs/dev, then review the plan.
 First apply with dns_proxied = false. Azure needs to validate the custom domain, and that fails while the record is proxied.
 Check the origin lockdown. A request straight to the ACA FQDN should be rejected by the IP restriction, and the domain name should should reach the app once it's proxied.
 Set dns_proxied = true and apply again. Visiting dev.rnorwood.com should now show the Access login page.
+
+
+github Auth: `export GITHUB_TOKEN=$(gh auth token)` before plan/apply.
